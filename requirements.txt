@@ -1,4 +1,4 @@
-pip install Pillow
+pip install Pillow ==9.4.0
 pip install streamlit
 streamlit==1.26.0
 Pillow==9.4.0
