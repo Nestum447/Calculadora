@@ -39,11 +39,15 @@ def calculator(is_vertical):
             """
             <style>
             .stButton > button {
-                width: 7%;           /* Reducir aún más el ancho de los botones */
-                height: 20px;        /* Reducir la altura de los botones */
-                font-size: 5px;      /* Reducir el tamaño del texto */
-                margin: 0.2px;       /* Reducir más el margen/espacio entre botones */
+                width: 12%;           /* Reducir el ancho de los botones */
+                height: 30px;         /* Reducir la altura de los botones */
+                font-size: 10px;      /* Reducir el tamaño del texto */
+                margin: 1px;          /* Reducir el margen/espacio entre botones */
                 padding: 0px;        /* Eliminar relleno para minimizar espacio */
+            }
+            /* Ajustar el espaciado entre columnas */
+            .stColumn {
+                padding: 0;
             }
             </style>
             """,
