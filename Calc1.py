@@ -11,83 +11,50 @@ def calculator(is_vertical):
         st.session_state['expression'] = ""
 
     # Definir los botones
-    buttons = [
+    buttons_horizontal = [
+        '7', '8', '9', '/', 'sqrt', 
+        '4', '5', '6', '*', 'pow', 
+        '1', '2', '3', '-', 'log',
+        '0', '.', '=', '+', 'C'
+    ]
+
+    buttons_vertical = [
         '7', '8', '9', '/', 
         '4', '5', '6', '*', 
         '1', '2', '3', '-', 
-        '0', '.', '=', '+',
-        'sqrt', 'pow', 'log', 'C'
+        'sqrt', 'pow', 'log', '+',
+        '0', '.', '=', 'C'
     ]
 
-    # CSS para el modo horizontal
-    if not is_vertical:
-        st.markdown(
-            """
-            <style>
-            .stButton > button {
-                width: 100%;
-                height: 50px;
-                font-size: 18px;
-            }
-            .stTextInput input {
-                width: 100%;
-                font-size: 18px;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        # CSS para el modo vertical
-        st.markdown(
-            """
-            <style>
-            .stButton > button {
-                width: 20%;           /* Asegura que los botones ocupen todo el ancho disponible */
-                height: 15px;         /* Ajusta la altura de los botones */
-                font-size: 5px;      /* Ajusta el tamaño del texto en los botones */
-                margin: 0.0001px;          /* Reduce el espacio entre los botones */
-                padding: 0px;        /* Elimina el relleno para minimizar el espacio */
-            }
-            /* Ajustar el espaciado entre columnas */
-            .stColumn {
-                padding: 0;
-            }
-            .stTextInput input {
-                width: 20%;           /* Reduce el tamaño del cuadro de expresión */
-                font-size: 10px;      /* Ajusta el tamaño del texto en el cuadro de expresión */
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+    # Elegir los botones según la orientación
+    buttons = buttons_vertical if is_vertical else buttons_horizontal
 
-    # Configurar el diseño basado en la orientación
-    num_cols = 4  # Número de columnas deseado
-    num_rows = (len(buttons) + num_cols - 1) // num_cols  # Calcula el número de filas necesarias
+    # Configurar el número de columnas
+    num_cols = 4
 
-    for row in range(num_rows):
+    # Crear un diseño en cuadrícula para los botones
+    for i in range(0, len(buttons), num_cols):
         cols = st.columns(num_cols)
-        for col in range(num_cols):
-            index = row * num_cols + col
-            if index < len(buttons):
-                button = buttons[index]
-                key = f"button-{button}-{index}"
-                button_text = {
-                    'sqrt': '√',
-                    'pow': '^',
-                    'log': 'log',
-                    '*': 'X',
-                    '-': 'Rest',
-                    '+': 'Sum'
-                }.get(button, button)
-                if button in {'=', 'C'}:
-                    cols[col].button(button_text, key=key, on_click=partial(operate, button))
-                else:
-                    cols[col].button(button_text, key=key, on_click=partial(append_expression, button))
+        for j, button in enumerate(buttons[i:i+num_cols]):
+            key = f"button-{button}-{i+j}"
+            button_text = {
+                'sqrt': '√',
+                'pow': '^',
+                'log': 'log',
+                '*': 'X',
+                '-': 'Rest',
+                '+': 'Sum'
+            }.get(button, button)
 
-    # Mostrar la expresión en una caja de texto
-    st.text_input("Expresión", st.session_state['expression'], key="expression_display")
+            # Crear el botón con el texto adecuado
+            if button in {'=', 'C'}:
+                cols[j].button(button_text, key=key, on_click=partial(operate, button))
+            else:
+                cols[j].button(button_text, key=key, on_click=partial(append_expression, button))
+
+    # Mostrar la expresión en una caja de texto con tamaño reducido en modo vertical
+    text_size = "20%" if is_vertical else "100%"
+    st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden", disabled=True)
 
 # Función para agregar a la expresión
 def append_expression(char):
