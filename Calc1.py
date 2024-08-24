@@ -114,8 +114,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Leer el valor de la orientación (vertical: True, horizontal: False)
-is_vertical = st.experimental_get_query_params().get("orientation", ["false"])[0] == "true"
+# Leer el valor de la orientación
+is_vertical = st.session_state.get('orientation', False)
 
 # Ejecutar la calculadora con la orientación correcta
 if __name__ == "__main__":
