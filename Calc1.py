@@ -6,33 +6,20 @@ from functools import partial
 def calculator():
     st.title("Calculadora Científica")
 
-    # CSS para ajustar el comportamiento en pantallas pequeñas
-    st.markdown(
-        """
-        <style>
-        /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
-        [data-testid="column"] {
-            flex: 1 !important;
-            max-width: 25% !important; /* 4 columnas */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     # Inicializar el estado de la expresión si no existe
     if 'expression' not in st.session_state:
         st.session_state['expression'] = ""
 
     # Definir los botones
     buttons = [
-        '7', '8', '9', '/', 'sqrt', 
-        '4', '5', '6', '*', 'pow', 
-        '1', '2', '3', '-', 'log',
-        '0', '.', '=', '+', 'C'
+        '7', '8', '9', '/', 
+        '4', '5', '6', '*', 
+        '1', '2', '3', '-', 
+        '0', '.', '=', '+',
+        'sqrt', 'pow', 'log', 'C'
     ]
 
-    # Ajustar las columnas a 4 por fila
+    # Crear un diseño en cuadrícula para los botones (4 botones por fila)
     button_grid = [buttons[i:i+4] for i in range(0, len(buttons), 4)]
 
     for row in button_grid:
@@ -44,10 +31,7 @@ def calculator():
             button_text = {
                 'sqrt': '√',
                 'pow': '^',
-                'log': 'log',
-                '*': 'X',
-                '-': 'Rest',
-                '+': 'Sum'
+                'log': 'log'
             }.get(button, button)
 
             # Crear el botón con el texto adecuado
