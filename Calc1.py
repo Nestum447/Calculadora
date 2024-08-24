@@ -1,41 +1,31 @@
 import streamlit as st
-from functools import partial
 
-# Función de la calculadora
-def calculator():
-    st.title("Calculadora con st.select_slider")
+def create_two_vertical_columns():
+    st.title("Dos Columnas Verticales")
 
-    # Inicializar el estado de la expresión si no existe
-    if 'expression' not in st.session_state:
-        st.session_state['expression'] = ""
+    # Crear dos columnas en disposición vertical
+    col1, col2 = st.columns(2)
 
-    # Grupos de botones organizados para la calculadora
-    buttons = ['7', '8', '9', '/',
-               '4', '5', '6', '*',
-               '1', '2', '3', '-',
-               '0', '.', '=', '+']
+    # Ajustar el tamaño y el espaciado de los botones
+    button_kwargs = {
+        "key": "button",
+        "use_container_width": True
+    }
 
-    # Crear un slider para seleccionar un botón
-    selected_button = st.select_slider("Seleccione un botón", options=buttons)
+    # Agregar botones a la primera columna
+    with col1:
+        st.button("Botón 1", **button_kwargs)
+        st.button("Botón 2", **button_kwargs)
+        st.button("Botón 3", **button_kwargs)
+        st.button("Botón 4", **button_kwargs)
 
-    # Crear un botón para añadir la selección a la expresión
-    if st.button("Agregar"):
-        append_expression(selected_button)
+    # Agregar botones a la segunda columna
+    with col2:
+        st.button("Botón A", **button_kwargs)
+        st.button("Botón B", **button_kwargs)
+        st.button("Botón C", **button_kwargs)
+        st.button("Botón D", **button_kwargs)
 
-    # Mostrar la expresión en una caja de texto
-    st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
-
-# Función para agregar a la expresión
-def append_expression(char):
-    if char == '=':
-        try:
-            # Evaluar la expresión
-            st.session_state['expression'] = str(eval(st.session_state['expression']))
-        except Exception as e:
-            st.session_state['expression'] = "Error"
-    else:
-        st.session_state['expression'] += str(char)
-
-# Ejecutar la calculadora
+# Ejecutar la función para mostrar dos columnas verticales
 if __name__ == "__main__":
-    calculator()
+    create_two_vertical_columns()
