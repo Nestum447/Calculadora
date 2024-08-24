@@ -3,7 +3,7 @@ from functools import partial
 
 # Función de la calculadora
 def calculator():
-    st.title("Calculadora con st.radio")
+    st.title("Calculadora con st.selectbox")
 
     # Inicializar el estado de la expresión si no existe
     if 'expression' not in st.session_state:
@@ -14,12 +14,12 @@ def calculator():
     group2 = ['4', '5', '6', '*']
     group3 = ['1', '2', '3', '-']
     group4 = ['0', '.', '=', '+']
-    
-    # Crear los controles radio para cada grupo
-    sel_group1 = st.radio("Seleccione", group1, horizontal=True, key="group1")
-    sel_group2 = st.radio("", group2, horizontal=True, key="group2")
-    sel_group3 = st.radio("", group3, horizontal=True, key="group3")
-    sel_group4 = st.radio("", group4, horizontal=True, key="group4")
+
+    # Crear controles selectbox para cada grupo
+    sel_group1 = st.selectbox("Seleccione", group1, key="group1")
+    sel_group2 = st.selectbox("", group2, key="group2")
+    sel_group3 = st.selectbox("", group3, key="group3")
+    sel_group4 = st.selectbox("", group4, key="group4")
 
     # Crear un botón para añadir la selección a la expresión
     if st.button("Agregar"):
