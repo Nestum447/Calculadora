@@ -2,7 +2,6 @@ import streamlit as st
 import math
 from functools import partial
 
-# Función de la calculadora
 def calculator():
     st.title("Calculadora Científica")
 
@@ -12,45 +11,20 @@ def calculator():
 
     # Definir los botones
     buttons = [
-        '7', '8', '9', '/', 'sqrt', 
-        '4', '5', '6', '*', 'pow', 
-        '1', '2', '3', '-', 'log',
-        '0', '.', '=', '+', 'C'
+        '7', '8', '9', '/', 
+        '4', '5', '6', '*', 
+        '1', '2', '3', '-', 
+        '0', '.', '=', '+',
+        'sqrt', 'pow', 'log', 'C'
     ]
 
-    # Dividir los botones en filas
-    button_grid = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
+    num_cols = 4  # Mantener siempre 4 columnas
 
-    # Ajustar la altura y el tamaño del texto de los botones
-    button_height = 40  # Ajusta la altura del botón
-    button_font_size = 20  # Ajusta el tamaño de la fuente
-
-    # Añadir estilo personalizado para los botones
-    st.markdown(
-        f"""
-        <style>
-        .stButton > button {{
-            height: {button_height}px;
-            font-size: {button_font_size}px;
-            margin: 2px;
-        }}
-        .stTextInput > div > input {{
-            font-size: {button_font_size}px;
-            height: {button_height}px;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Mostrar la expresión en una caja de texto
-    st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
-
-    # Mostrar los botones en una cuadrícula
-    for row in button_grid:
-        cols = st.columns(4)  # Forzar siempre 4 columnas
-        for i, button in enumerate(row):
-            key = f"button-{button}-{i}"
+    # Crear un diseño en cuadrícula para los botones
+    for i in range(0, len(buttons), num_cols):
+        cols = st.columns(num_cols)
+        for j, button in enumerate(buttons[i:i+num_cols]):
+            key = f"button-{button}-{i+j}"
             button_text = {
                 'sqrt': '√',
                 'pow': '^',
@@ -61,10 +35,10 @@ def calculator():
             }.get(button, button)
 
             # Crear el botón con el texto adecuado
-            if button in {'=', 'C'}:
-                cols[i].button(button_text, key=key, on_click=partial(operate, button))
-            else:
-                cols[i].button(button_text, key=key, on_click=partial(append_expression, button))
+            cols[j].button(button_text, key=key, on_click=partial(operate, button) if button in {'=', 'C'} else partial(append_expression, button))
+
+    # Mostrar la expresión en una caja de texto
+    st.text_input("Expresión", st.session_state['expression'], key="expression_display")
 
 # Función para agregar a la expresión
 def append_expression(char):
