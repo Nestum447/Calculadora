@@ -29,6 +29,10 @@ def calculator(is_vertical):
                 height: 50px;
                 font-size: 18px;
             }
+            .stTextInput input {
+                width: 100%;
+                font-size: 18px;
+            }
             </style>
             """,
             unsafe_allow_html=True
@@ -41,13 +45,17 @@ def calculator(is_vertical):
             .stButton > button {
                 width: 12%;           /* Reducir el ancho de los botones */
                 height: 30px;         /* Reducir la altura de los botones */
-                font-size: 10px;      /* Reducir el tamaño del texto */
+                font-size: 8px;       /* Reducir el tamaño del texto */
                 margin: 1px;          /* Reducir el margen/espacio entre botones */
                 padding: 0px;        /* Eliminar relleno para minimizar espacio */
             }
             /* Ajustar el espaciado entre columnas */
             .stColumn {
                 padding: 0;
+            }
+            .stTextInput input {
+                width: 20%;           /* Reducir el tamaño del cuadro de expresión */
+                font-size: 8px;       /* Ajustar el tamaño del texto en el cuadro de expresión */
             }
             </style>
             """,
