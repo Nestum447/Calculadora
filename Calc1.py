@@ -13,7 +13,7 @@ def calculator():
         /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
         [data-testid="column"] {
             flex: 1 !important;
-            max-width: 25% !important; /* 4 columnas */
+            max-width: 25% !important; /* 8 columnas */
         }
         </style>
         """,
