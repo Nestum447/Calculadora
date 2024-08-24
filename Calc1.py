@@ -3,7 +3,7 @@ import math
 from functools import partial
 
 # Función de la calculadora
-def calculator(is_vertical):
+def calculator():
     st.title("Calculadora Científica")
 
     # Inicializar el estado de la expresión si no existe
@@ -11,32 +11,46 @@ def calculator(is_vertical):
         st.session_state['expression'] = ""
 
     # Definir los botones
-    buttons_horizontal = [
+    buttons = [
         '7', '8', '9', '/', 'sqrt', 
         '4', '5', '6', '*', 'pow', 
         '1', '2', '3', '-', 'log',
         '0', '.', '=', '+', 'C'
     ]
 
-    buttons_vertical = [
-        '7', '8', '9', '/', 
-        '4', '5', '6', '*', 
-        '1', '2', '3', '-', 
-        'sqrt', 'pow', 'log', '+',
-        '0', '.', '=', 'C'
-    ]
+    # Dividir los botones en filas
+    button_grid = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
 
-    # Elegir los botones según la orientación
-    buttons = buttons_vertical if is_vertical else buttons_horizontal
+    # Ajustar la altura y el tamaño del texto de los botones
+    button_height = 40  # Ajusta la altura del botón
+    button_font_size = 20  # Ajusta el tamaño de la fuente
 
-    # Configurar el número de columnas
-    num_cols = 4
+    # Añadir estilo personalizado para los botones
+    st.markdown(
+        f"""
+        <style>
+        .stButton > button {{
+            height: {button_height}px;
+            font-size: {button_font_size}px;
+            margin: 2px;
+        }}
+        .stTextInput > div > input {{
+            font-size: {button_font_size}px;
+            height: {button_height}px;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Crear un diseño en cuadrícula para los botones
-    for i in range(0, len(buttons), num_cols):
-        cols = st.columns(num_cols)
-        for j, button in enumerate(buttons[i:i+num_cols]):
-            key = f"button-{button}-{i+j}"
+    # Mostrar la expresión en una caja de texto
+    st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
+
+    # Mostrar los botones en una cuadrícula
+    for row in button_grid:
+        cols = st.columns(4)  # Forzar siempre 4 columnas
+        for i, button in enumerate(row):
+            key = f"button-{button}-{i}"
             button_text = {
                 'sqrt': '√',
                 'pow': '^',
@@ -48,13 +62,9 @@ def calculator(is_vertical):
 
             # Crear el botón con el texto adecuado
             if button in {'=', 'C'}:
-                cols[j].button(button_text, key=key, on_click=partial(operate, button))
+                cols[i].button(button_text, key=key, on_click=partial(operate, button))
             else:
-                cols[j].button(button_text, key=key, on_click=partial(append_expression, button))
-
-    # Mostrar la expresión en una caja de texto con tamaño reducido en modo vertical
-    text_size = "20%" if is_vertical else "100%"
-    st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden", disabled=True)
+                cols[i].button(button_text, key=key, on_click=partial(append_expression, button))
 
 # Función para agregar a la expresión
 def append_expression(char):
@@ -80,15 +90,6 @@ def operate(button):
     elif button == 'C':
         st.session_state['expression'] = ""
 
-# Opción de selección manual
-orientation = st.selectbox(
-    "Selecciona el modo de visualización:",
-    ("Horizontal", "Vertical")
-)
-
-# Determinar la orientación seleccionada
-is_vertical = orientation == "Vertical"
-
-# Ejecutar la calculadora con la orientación seleccionada
+# Ejecutar la calculadora
 if __name__ == "__main__":
-    calculator(is_vertical)
+    calculator()
