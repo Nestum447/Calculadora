@@ -9,44 +9,25 @@ def calculator():
     if 'expression' not in st.session_state:
         st.session_state['expression'] = ""
 
-    # Definir los botones
+    # Definir los botones en dos columnas
     buttons = [
-        '7', '8', '9', '/',
-        '4', '5', '6', '*',
-        '1', '2', '3', '-',
-        '0', '.', '=', '+'
+        ['7', '8'],
+        ['4', '5'],
+        ['1', '2'],
+        ['0', '.'],
+        ['9', '/'],
+        ['6', '*'],
+        ['3', '-'],
+        ['=', '+']
     ]
 
-    # Aplicar estilo CSS personalizado
-    st.markdown(
-        """
-        <style>
-        .button-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Dos columnas */
-            gap: 10px; /* Espacio entre botones */
-        }
-        .stButton > button {
-            width: 100%; /* Botones ocupan el ancho completo de la columna */
-            height: 50px; /* Ajusta la altura de los botones */
-            font-size: 18px; /* Ajusta el tamaño del texto */
-        }
-        .stTextInput > div > input {
-            font-size: 18px;
-            height: 50px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Crear un contenedor para los botones
-    st.markdown('<div class="button-grid">', unsafe_allow_html=True)
-    
-    for button in buttons:
-        st.button(button, key=button, on_click=partial(append_expression, button))
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Crear el layout de las columnas manualmente
+    for row in buttons:
+        col1, col2 = st.columns(2)
+        with col1:
+            st.button(row[0], key=row[0], on_click=partial(append_expression, row[0]))
+        with col2:
+            st.button(row[1], key=row[1], on_click=partial(append_expression, row[1]))
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
