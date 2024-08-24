@@ -43,19 +43,19 @@ def calculator(is_vertical):
             """
             <style>
             .stButton > button {
-                width: 12%;           /* Reducir el ancho de los botones */
-                height: 30px;         /* Reducir la altura de los botones */
-                font-size: 8px;       /* Reducir el tamaño del texto */
-                margin: 1px;          /* Reducir el margen/espacio entre botones */
-                padding: 0px;        /* Eliminar relleno para minimizar espacio */
+                width: 100%;           /* Establece el ancho de los botones a 100% del contenedor */
+                height: 30px;         /* Ajusta la altura de los botones */
+                font-size: 10px;      /* Ajusta el tamaño del texto en los botones */
+                margin: 1px;          /* Reduce el espacio entre los botones */
+                padding: 0px;        /* Elimina el relleno para minimizar el espacio */
             }
-            /* Ajustar el espaciado entre columnas */
+            /* Ajusta el espaciado entre columnas */
             .stColumn {
                 padding: 0;
             }
             .stTextInput input {
-                width: 20%;           /* Reducir el tamaño del cuadro de expresión */
-                font-size: 8px;       /* Ajustar el tamaño del texto en el cuadro de expresión */
+                width: 20%;           /* Reduce el tamaño del cuadro de expresión */
+                font-size: 10px;      /* Ajusta el tamaño del texto en el cuadro de expresión */
             }
             </style>
             """,
@@ -63,19 +63,28 @@ def calculator(is_vertical):
         )
 
     # Configurar el diseño basado en la orientación
-    for i in range(0, len(buttons), 4):  # 4 columnas por fila
-        cols = st.columns(4)
-        for j, button in enumerate(buttons[i:i+4]):
-            key = f"button-{button}-{i+j}"
-            button_text = {
-                'sqrt': '√',
-                'pow': '^',
-                'log': 'log',
-                '*': 'X',
-                '-': 'Rest',
-                '+': 'Sum'
-            }.get(button, button)
-            cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
+    num_cols = 4  # Número de columnas deseado
+    num_rows = (len(buttons) + num_cols - 1) // num_cols  # Calcula el número de filas necesarias
+
+    for row in range(num_rows):
+        cols = st.columns(num_cols)
+        for col in range(num_cols):
+            index = row * num_cols + col
+            if index < len(buttons):
+                button = buttons[index]
+                key = f"button-{button}-{index}"
+                button_text = {
+                    'sqrt': '√',
+                    'pow': '^',
+                    'log': 'log',
+                    '*': 'X',
+                    '-': 'Rest',
+                    '+': 'Sum'
+                }.get(button, button)
+                if button in {'=', 'C'}:
+                    cols[col].button(button_text, key=key, on_click=partial(operate, button))
+                else:
+                    cols[col].button(button_text, key=key, on_click=partial(append_expression, button))
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display")
