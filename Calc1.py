@@ -3,30 +3,24 @@ from functools import partial
 
 # Función de la calculadora
 def calculator():
-    st.title("Calculadora con st.selectbox")
+    st.title("Calculadora con st.select_slider")
 
     # Inicializar el estado de la expresión si no existe
     if 'expression' not in st.session_state:
         st.session_state['expression'] = ""
 
     # Grupos de botones organizados para la calculadora
-    group1 = ['7', '8', '9', '/']
-    group2 = ['4', '5', '6', '*']
-    group3 = ['1', '2', '3', '-']
-    group4 = ['0', '.', '=', '+']
+    buttons = ['7', '8', '9', '/',
+               '4', '5', '6', '*',
+               '1', '2', '3', '-',
+               '0', '.', '=', '+']
 
-    # Crear controles selectbox para cada grupo
-    sel_group1 = st.selectbox("Seleccione", group1, key="group1")
-    sel_group2 = st.selectbox("", group2, key="group2")
-    sel_group3 = st.selectbox("", group3, key="group3")
-    sel_group4 = st.selectbox("", group4, key="group4")
+    # Crear un slider para seleccionar un botón
+    selected_button = st.select_slider("Seleccione un botón", options=buttons)
 
     # Crear un botón para añadir la selección a la expresión
     if st.button("Agregar"):
-        append_expression(sel_group1)
-        append_expression(sel_group2)
-        append_expression(sel_group3)
-        append_expression(sel_group4)
+        append_expression(selected_button)
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
