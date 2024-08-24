@@ -19,51 +19,49 @@ def calculator(is_vertical):
         'sqrt', 'pow', 'log', 'C'
     ]
 
-    # CSS común para ambos modos
-    st.markdown(
-        """
-        <style>
-        .stButton > button {
-            width: 100%;
-            height: 50px;
-            font-size: 18px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    # CSS para el modo horizontal
+    if not is_vertical:
+        st.markdown(
+            """
+            <style>
+            .stButton > button {
+                width: 100%;
+                height: 50px;
+                font-size: 18px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        # CSS para el modo vertical
+        st.markdown(
+            """
+            <style>
+            .stButton > button {
+                width: 10%;
+                height: 30px;
+                font-size: 10px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
     # Configurar el diseño basado en la orientación
-    if is_vertical:
-        st.write("Modo Vertical Seleccionado")
-        for i in range(0, len(buttons), 4):  # 4 columnas por fila en modo vertical
-            cols = st.columns(4)
-            for j, button in enumerate(buttons[i:i+4]):
-                key = f"button-{button}-{i+j}"
-                button_text = {
-                    'sqrt': '√',
-                    'pow': '^',
-                    'log': 'log',
-                    '*': 'X',
-                    '-': 'Rest',
-                    '+': 'Sum'
-                }.get(button, button)
-                cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
-    else:
-        st.write("Modo Horizontal Seleccionado")
-        for i in range(0, len(buttons), 4):  # 4 columnas por fila en modo horizontal
-            cols = st.columns(4)
-            for j, button in enumerate(buttons[i:i+4]):
-                key = f"button-{button}-{i+j}"
-                button_text = {
-                    'sqrt': '√',
-                    'pow': '^',
-                    'log': 'log',
-                    '*': 'X',
-                    '-': 'Rest',
-                    '+': 'Sum'
-                }.get(button, button)
-                cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
+    for i in range(0, len(buttons), 4):  # 4 columnas por fila
+        cols = st.columns(4)
+        for j, button in enumerate(buttons[i:i+4]):
+            key = f"button-{button}-{i+j}"
+            button_text = {
+                'sqrt': '√',
+                'pow': '^',
+                'log': 'log',
+                '*': 'X',
+                '-': 'Rest',
+                '+': 'Sum'
+            }.get(button, button)
+            cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display")
