@@ -6,6 +6,20 @@ from functools import partial
 def calculator():
     st.title("Calculadora Científica")
 
+    # CSS para ajustar el comportamiento en pantallas pequeñas
+    st.markdown(
+        """
+        <style>
+        /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
+        [data-testid="column"] {
+            flex: 1 !important;
+            max-width: 25% !important; /* 4 columnas */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Inicializar el estado de la expresión si no existe
     if 'expression' not in st.session_state:
         st.session_state['expression'] = ""
