@@ -35,7 +35,7 @@ def calculator(is_vertical):
 
     # Configurar el diseño basado en la orientación
     if is_vertical:
-        st.write("Modo Vertical Detectado")
+        st.write("Modo Vertical Seleccionado")
         for i in range(0, len(buttons), 4):  # 4 columnas por fila en modo vertical
             cols = st.columns(4)
             for j, button in enumerate(buttons[i:i+4]):
@@ -50,7 +50,7 @@ def calculator(is_vertical):
                 }.get(button, button)
                 cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
     else:
-        st.write("Modo Horizontal Detectado")
+        st.write("Modo Horizontal Seleccionado")
         for i in range(0, len(buttons), 4):  # 4 columnas por fila en modo horizontal
             cols = st.columns(4)
             for j, button in enumerate(buttons[i:i+4]):
@@ -92,31 +92,15 @@ def operate(button):
     elif button == 'C':
         st.session_state['expression'] = ""
 
-# JavaScript para detectar la orientación
-st.markdown(
-    """
-    <script>
-    function sendOrientation() {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        if (width < height) {
-            // Modo vertical
-            Streamlit.setComponentValue(true);
-        } else {
-            // Modo horizontal
-            Streamlit.setComponentValue(false);
-        }
-    }
-    window.addEventListener('resize', sendOrientation);
-    document.addEventListener('DOMContentLoaded', sendOrientation);
-    </script>
-    """,
-    unsafe_allow_html=True
+# Opción de selección manual
+orientation = st.selectbox(
+    "Selecciona el modo de visualización:",
+    ("Horizontal", "Vertical")
 )
 
-# Leer el valor de la orientación
-is_vertical = st.session_state.get('orientation', False)
+# Determinar la orientación seleccionada
+is_vertical = orientation == "Vertical"
 
-# Ejecutar la calculadora con la orientación correcta
+# Ejecutar la calculadora con la orientación seleccionada
 if __name__ == "__main__":
     calculator(is_vertical)
