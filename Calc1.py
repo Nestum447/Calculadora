@@ -46,7 +46,7 @@ def calculator(is_vertical):
                 width: 10%;           /* Establece el ancho de los botones a 100% del contenedor */
                 height: 10px;         /* Ajusta la altura de los botones */
                 font-size: 7px;      /* Ajusta el tamaño del texto en los botones */
-                margin: 0.01px;          /* Reduce el espacio entre los botones */
+                margin: 0.0000px;          /* Reduce el espacio entre los botones */
                 padding: 0px;        /* Elimina el relleno para minimizar el espacio */
             }
             /* Ajusta el espaciado entre columnas */
