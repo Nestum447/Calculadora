@@ -8,23 +8,22 @@ def create_two_vertical_columns():
 
     # Ajustar el tamaño y el espaciado de los botones
     button_kwargs = {
-        "key": "button",
         "use_container_width": True
     }
 
     # Agregar botones a la primera columna
     with col1:
-        st.button("Botón 1", **button_kwargs)
-        st.button("Botón 2", **button_kwargs)
-        st.button("Botón 3", **button_kwargs)
-        st.button("Botón 4", **button_kwargs)
+        st.button("Botón 1", key="button1", **button_kwargs)
+        st.button("Botón 2", key="button2", **button_kwargs)
+        st.button("Botón 3", key="button3", **button_kwargs)
+        st.button("Botón 4", key="button4", **button_kwargs)
 
     # Agregar botones a la segunda columna
     with col2:
-        st.button("Botón A", **button_kwargs)
-        st.button("Botón B", **button_kwargs)
-        st.button("Botón C", **button_kwargs)
-        st.button("Botón D", **button_kwargs)
+        st.button("Botón A", key="buttonA", **button_kwargs)
+        st.button("Botón B", key="buttonB", **button_kwargs)
+        st.button("Botón C", key="buttonC", **button_kwargs)
+        st.button("Botón D", key="buttonD", **button_kwargs)
 
 # Ejecutar la función para mostrar dos columnas verticales
 if __name__ == "__main__":
