@@ -15,18 +15,19 @@ def calculator():
     buttons_col3 = ['9', '6', '3', '=']
     buttons_col4 = ['/', '*', '-', '+']
 
-    # Crear dos columnas en la interfaz
-    col1, col2 = st.columns(2)
+    # Crear un expander para contener los botones en dos columnas
+    with st.expander("Controles"):
+        col1, col2 = st.columns(2)
 
-    # Mostrar los botones en la primera columna
-    with col1:
-        for button in buttons_col1 + buttons_col3:
-            st.button(button, on_click=partial(append_expression, button))
-            
-    # Mostrar los botones en la segunda columna
-    with col2:
-        for button in buttons_col2 + buttons_col4:
-            st.button(button, on_click=partial(append_expression, button))
+        # Mostrar los botones en la primera columna
+        with col1:
+            for button in buttons_col1 + buttons_col3:
+                st.button(button, key=button, on_click=partial(append_expression, button))
+
+        # Mostrar los botones en la segunda columna
+        with col2:
+            for button in buttons_col2 + buttons_col4:
+                st.button(button, key=button, on_click=partial(append_expression, button))
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display", label_visibility="hidden")
