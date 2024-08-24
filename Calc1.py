@@ -18,51 +18,47 @@ def calculator():
         '0', '.', '=', '+', 'C'
     ]
 
-    # Ajustar las columnas a 4 por fila
-    button_grid = [buttons[i:i+4] for i in range(0, len(buttons), 4)]
-
     # CSS para ajustar el comportamiento en pantallas pequeñas
     st.markdown(
         """
         <style>
-        /* Asegura que las columnas se mantengan en una fila */
-        .stButton > button {
+        /* Contenedor de botones usando flexbox */
+        .button-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
-        /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
-        [data-testid="column"] {
-            flex: 1;
-            max-width: 25%; /* Ajustar para 4 columnas en pantalla pequeña */
+        .button-container > div {
+            flex: 1 1 23%; /* Asegura 4 botones por fila */
+            margin: 5px;
+        }
+        button {
+            width: 100%;
+            height: 50px;
+            font-size: 20px;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    for row in button_grid:
-        cols = st.columns(len(row))
-        for i, button in enumerate(row):
-            key = f"button-{button}-{i}"
-            
-            # Asegurarse de que el botón tenga el texto correcto
-            button_text = {
-                'sqrt': '√',
-                'pow': '^',
-                'log': 'log',
-                '*': 'X',
-                '-': 'Rest',
-                '+': 'Sum'
-            }.get(button, button)
+    # Crear el contenedor de botones
+    st.markdown("<div class='button-container'>", unsafe_allow_html=True)
+    
+    for button in buttons:
+        button_text = {
+            'sqrt': '√',
+            'pow': '^',
+            'log': 'log',
+            '*': 'X',
+            '-': 'Rest',
+            '+': 'Sum'
+        }.get(button, button)
 
-            # Crear el botón con el texto adecuado
-            if button in {'=', 'C'}:
-                cols[i].button(button_text, key=key, on_click=partial(operate, button))
-            else:
-                cols[i].button(button_text, key=key, on_click=partial(append_expression, button))
+        # Crear cada botón con su contenedor
+        st.markdown(f"<div>{st.button(button_text, key=f'button-{button}')}</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display")
@@ -94,5 +90,3 @@ def operate(button):
 # Ejecutar la calculadora
 if __name__ == "__main__":
     calculator()
-
-
