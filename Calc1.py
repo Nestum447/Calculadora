@@ -12,53 +12,50 @@ def calculator():
 
     # Definir los botones
     buttons = [
-        '7', '8', '9', '/', 'sqrt', 
-        '4', '5', '6', '*', 'pow', 
-        '1', '2', '3', '-', 'log',
-        '0', '.', '=', '+', 'C'
+        '7', '8', '9', '/', 
+        '4', '5', '6', '*', 
+        '1', '2', '3', '-', 
+        '0', '.', '=', '+',
+        'sqrt', 'pow', 'log', 'C'
     ]
 
-    # CSS para ajustar el comportamiento en pantallas pequeñas
+    # CSS para ajustar el tamaño de los botones y columnas
     st.markdown(
         """
         <style>
-        /* Contenedor de botones usando flexbox */
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .button-container > div {
-            flex: 1 1 23%; /* Asegura 4 botones por fila */
-            margin: 5px;
-        }
-        button {
+        /* Asegura que las columnas se mantengan en una fila */
+        .stButton > button {
             width: 100%;
             height: 50px;
             font-size: 20px;
+        }
+        /* Ajustar el ancho de las columnas */
+        [data-testid="column"] {
+            flex: 1 1 20%; /* Controla el tamaño mínimo de las columnas */
+            max-width: 25%; /* Asegura que se mantengan 4 columnas por fila */
+            margin-right: 0.5%;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    # Crear el contenedor de botones
-    st.markdown("<div class='button-container'>", unsafe_allow_html=True)
-    
-    for button in buttons:
-        button_text = {
-            'sqrt': '√',
-            'pow': '^',
-            'log': 'log',
-            '*': 'X',
-            '-': 'Rest',
-            '+': 'Sum'
-        }.get(button, button)
+    # Crear el diseño de la calculadora con 4 columnas por fila
+    for i in range(0, len(buttons), 4):
+        cols = st.columns(4)
+        for j, button in enumerate(buttons[i:i+4]):
+            key = f"button-{button}-{i+j}"
+            
+            button_text = {
+                'sqrt': '√',
+                'pow': '^',
+                'log': 'log',
+                '*': 'X',
+                '-': 'Rest',
+                '+': 'Sum'
+            }.get(button, button)
 
-        # Crear cada botón con su contenedor
-        st.markdown(f"<div>{st.button(button_text, key=f'button-{button}')}</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
+            cols[j].button(button_text, key=key, on_click=partial(append_expression, button) if button not in {'=', 'C'} else partial(operate, button))
 
     # Mostrar la expresión en una caja de texto
     st.text_input("Expresión", st.session_state['expression'], key="expression_display")
