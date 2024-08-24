@@ -1,22 +1,19 @@
 import streamlit as st
 
-def create_two_columns():
-    st.title("Dos Columnas en Vista Vertical")
+def create_two_columns_fixed():
+    st.title("Calculadora en Vista Vertical")
 
-    # Crear dos columnas
-    col1, col2 = st.columns(2)
+    # Botones en pares para dos columnas
+    buttons = [("Botón 1", "Botón A"), 
+               ("Botón 2", "Botón B"), 
+               ("Botón 3", "Botón C"), 
+               ("Botón 4", "Botón D")]
 
-    # Lista de botones para cada columna con identificadores únicos
-    buttons_col1 = ["Botón 1", "Botón 2", "Botón 3", "Botón 4"]
-    buttons_col2 = ["Botón A", "Botón B", "Botón C", "Botón D"]
-
-    # Agregar botones a la primera columna
-    for i, text in enumerate(buttons_col1):
-        col1.button(text, key=f"col1_button_{i}", use_container_width=True)
-
-    # Agregar botones a la segunda columna
-    for i, text in enumerate(buttons_col2):
-        col2.button(text, key=f"col2_button_{i}", use_container_width=True)
+    # Crear una fila de columnas para cada par de botones
+    for i, (btn1, btn2) in enumerate(buttons):
+        col1, col2 = st.columns(2)
+        col1.button(btn1, key=f"col1_button_{i}", use_container_width=True)
+        col2.button(btn2, key=f"col2_button_{i}", use_container_width=True)
 
 if __name__ == "__main__":
-    create_two_columns()
+    create_two_columns_fixed()
