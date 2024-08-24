@@ -6,20 +6,6 @@ from functools import partial
 def calculator():
     st.title("Calculadora Científica")
 
-    # CSS para ajustar el comportamiento en pantallas pequeñas
-    st.markdown(
-        """
-        <style>
-        /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
-        [data-testid="column"] {
-            flex: 1 !important;
-            max-width: 12.5% !important; /* 4 columnas */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     # Inicializar el estado de la expresión si no existe
     if 'expression' not in st.session_state:
         st.session_state['expression'] = ""
@@ -34,6 +20,28 @@ def calculator():
 
     # Ajustar las columnas a 4 por fila
     button_grid = [buttons[i:i+4] for i in range(0, len(buttons), 4)]
+
+    # CSS para ajustar el comportamiento en pantallas pequeñas
+    st.markdown(
+        """
+        <style>
+        /* Asegura que las columnas se mantengan en una fila */
+        .stButton > button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        /* Asegura que las columnas no se apilen verticalmente en pantallas pequeñas */
+        [data-testid="column"] {
+            flex: 1;
+            max-width: 25%; /* Ajustar para 4 columnas en pantalla pequeña */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     for row in button_grid:
         cols = st.columns(len(row))
