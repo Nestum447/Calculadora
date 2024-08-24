@@ -12,36 +12,41 @@ def calculator():
 
     # Definir los botones
     buttons = [
-        '7', '8', '9', '/', 
-        '4', '5', '6', '*', 
-        '1', '2', '3', '-', 
-        '0', '.', '=', '+',
-        'sqrt', 'pow', 'log', 'C'
+        '7', '8', '9', '/', 'sqrt', 
+        '4', '5', '6', '*', 'pow', 
+        '1', '2', '3', '-', 'log',
+        '0', '.', '=', '+', 'C'
     ]
 
-    # Crear un diseño en cuadrícula para los botones (4 botones por fila)
-    button_grid = [buttons[i:i+4] for i in range(0, len(buttons), 4)]
+    # Crear un diseño en cuadrícula para los botones
+    button_grid = [buttons[i:i+5] for i in range(0, len(buttons), 5)]
 
-    for row in button_grid:
-        cols = st.columns(len(row))
-        for i, button in enumerate(row):
-            key = f"button-{button}-{i}"
-            
-            # Asegurarse de que el botón tenga el texto correcto
-            button_text = {
-                'sqrt': '√',
-                'pow': '^',
-                'log': 'log'
-            }.get(button, button)
+    with st.container():
+        for row in button_grid:
+            cols = st.columns(len(row))
+            for i, button in enumerate(row):
+                key = f"button-{button}-{i}"
+                
+                # Asegurarse de que el botón tenga el texto correcto
+                button_text = {
+                    'sqrt': '√',
+                    'pow': '^',
+                    'log': 'log',
+                    '*': '×',
+                    '-': '−',
+                    '+': '+',
+                    '=': '=',
+                    'C': 'C'
+                }.get(button, button)
 
-            # Crear el botón con el texto adecuado
-            if button in {'=', 'C'}:
-                cols[i].button(button_text, key=key, on_click=partial(operate, button))
-            else:
-                cols[i].button(button_text, key=key, on_click=partial(append_expression, button))
+                # Crear el botón con el texto adecuado
+                if button in {'=', 'C'}:
+                    cols[i].button(button_text, key=key, on_click=partial(operate, button))
+                else:
+                    cols[i].button(button_text, key=key, on_click=partial(append_expression, button))
 
-    # Mostrar la expresión en una caja de texto
-    st.text_input("Expresión", st.session_state['expression'], key="expression_display")
+        # Mostrar la expresión en una caja de texto
+        st.text_input("Expresión", st.session_state['expression'], key="expression_display")
 
 # Función para agregar a la expresión
 def append_expression(char):
@@ -50,7 +55,7 @@ def append_expression(char):
     elif char == 'pow':
         st.session_state['expression'] += '**'
     elif char == 'log':
-        st.session_state['expression'] += 'log10('
+        st.session_state['expression'] += 'math.log10('
     else:
         st.session_state['expression'] += str(char)
 
