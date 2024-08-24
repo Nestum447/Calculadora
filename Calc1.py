@@ -41,8 +41,8 @@ def calculator(is_vertical):
             .stButton > button {
                 width: 7%;           /* Reducir aún más el ancho de los botones */
                 height: 20px;        /* Reducir la altura de los botones */
-                font-size: 7px;      /* Reducir el tamaño del texto */
-                margin: 0.5px;       /* Reducir más el margen/espacio entre botones */
+                font-size: 5px;      /* Reducir el tamaño del texto */
+                margin: 0.2px;       /* Reducir más el margen/espacio entre botones */
                 padding: 0px;        /* Eliminar relleno para minimizar espacio */
             }
             </style>
